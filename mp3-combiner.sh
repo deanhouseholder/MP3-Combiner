@@ -2,8 +2,13 @@
 # Note: This script requires "sox" to be installed
 # Note: Built with assumption that no sox jobs are running when started
 
+command -v sox &>/dev/null || {
+  echo >&2 "Sox is not installed. Please install before continuing."
+  exit 1
+}
+
 IFS=$'\n' dirs="$(/usr/bin/ls | cat | grep -v .mp3)"
-cpus=$(cat /proc/cpuinfo | grep processor | wc -l)
+let cpus=$(cat /proc/cpuinfo | grep processor | wc -l)-1
 i=1
 declare -a need_to_process
 declare -a files_being_written_to
